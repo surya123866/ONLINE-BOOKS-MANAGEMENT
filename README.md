@@ -4,6 +4,16 @@
 
 Build a comprehensive online library management system utilizing the MERN stack (MongoDB, Express.js, React.js, Node.js).
 
+## Screen Shots
+![Screenshot 2024-07-09 115532](https://github.com/surya123866/ONLINE-BOOKS-MANAGEMENT/assets/79002343/3aacef9d-14db-4e4d-9710-797e63f61d75)
+
+
+## Video Demonistration
+
+
+Uploading Screen Recording 2024-07-10 115940.mp4…
+
+
 ## Core Components
 
 ### Backend Development
