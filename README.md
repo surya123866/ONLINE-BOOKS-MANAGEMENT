@@ -1,198 +1,287 @@
-# ONLINE-BOOKS-MANAGEMENT-SYSTEM
+# Online Library Management System
 
-## Backend
+## Objective
 
-This repository contains the backend task for handling product transactions from a third-party API. The task involves fetching data, initializing a database, and creating various APIs for querying and analyzing transaction data.
+Build a comprehensive online library management system utilizing the MERN stack (MongoDB, Express.js, React.js, Node.js).
 
-### Data Source
+## Core Components
 
-- **Product Transactions JSON API URL**: [https://s3.amazonaws.com/roxiler.com/product_transaction.json](https://s3.amazonaws.com/roxiler.com/product_transaction.json)
-- **Request Method**: GET
-- **Response Format**: JSON
+### Backend Development
+
+- **Runtime Environment:** Node.js
+- **Server-Side Logic:** Express.js
+- **Database:** MongoDB
+
+### Frontend Development
+
+- **User Interface:** React.js
+- **Design:** Responsive and intuitive
+
+## System Entities and Properties
+
+### Books
+
+- Name
+- Author
+- Current book Availability Status
+
+### User
+
+- Username
+- Name
+- Email
+- Contact Number
+
+### Admin User
+
+- Username
+- Name
+- Password (Ensure secure handling)
+- Email
+- Contact Number
+
+### Library Transaction
+
+- User details
+- Book details
+- Due date
+- Transaction type (borrowed/returned)
+
+## Functional Requirements
+
+### Admin User Operations
+
+- Issue and return books, altering their availability status.
+- Add new books to the system.
+- Remove existing books from the inventory.
+
+### User Interactions (Read-Only)
+
+- Browse the library catalog.
+- View personal transaction history
+
+## Assumptions
+
+- Normal users have no system privileges beyond viewing.
+- All administrative operations (issuing, returning, adding, or removing books) are exclusively performed by the admin user.
 
 ### Setup Instructions
 
 1. **Clone the Repository**:
-    ```bash
-    git clone https://github.com/surya123866/transactions-statistics.git
-    cd transactions-statistics
-    ```
+
+   ```bash
+   git clone https://github.com/surya123866/ONLINE-BOOKS-MANAGEMENT.git
+   cd backend
+   ```
 
 2. **Install Dependencies**:
-    ```bash
-    npm install
-    ```
+
+   ```bash
+   npm install
+   ```
 
 3. **Configure Database**:
-    Ensure your database is up and running and update the database configuration in `config.js` or `.env` file as per your database setup.
+   Ensure your database is up and running and update the database configuration in `.env` file as per your database setup.
 
-4. **Initialize Database**:
-    Fetch the JSON data from the third-party API and initialize the database with seed data by running:
-    ```bash
-    npm run init-db
-    ```
+4. **Initialize Server and Database**:
+   ```bash
+   nodemon server.js
+   ```
 
-### API Endpoints
+## API Endpoints
 
-#### Initialize Database
+## User APIs
 
-- **Endpoint**: `/api/init`
-- **Method**: GET
-- **Description**: Fetches JSON from the third-party API and initializes the database with seed data.
+### Login User API
 
-#### List All Transactions
+- **Endpoint**: api/user/login
+- **Methods**: POST
+- **Parameters**: Body - {"username":"exampleuser","password": "dummypassword",}
 
-- **Endpoint**: `/api/transactions`
-- **Method**: GET
-- **Query Parameters**:
-  - `month` (required): Month for filtering transactions (values: January to December).
-  - `page` (optional): Page number for pagination (default: 1).
-  - `per_page` (optional): Number of transactions per page (default: 10).
-  - `search` (optional): Search text for filtering transactions based on product title, description, or price.
-- **Description**: Lists all transactions filtered by month. Supports search and pagination.
 
-#### Statistics
+### Register User API
 
-- **Endpoint**: `/api/statistics`
-- **Method**: GET
-- **Query Parameters**:
-  - `month` (required): Month for filtering transactions (values: January to December).
-- **Description**: Provides statistics for the selected month, including total sale amount, total number of sold items, and total number of not sold items.
+- **Endpoint**: /api/user/register
+- **Methods**: POST
+- **Parameters**: Body -
+  {"contactNumber": "000000000",
+  "email": "gmail.@gmail.com",
+  "name": "examplename",
+  "password":"dummypassword",
+  "username":"eampleuser"}
 
-#### Bar Chart Data
+  
+### User Transactions books API
 
-- **Endpoint**: `/api/bar-chart`
-- **Method**: GET
-- **Query Parameters**:
-  - `month` (required): Month for filtering transactions (values: January to December).
-- **Description**: Returns data for a bar chart showing the number of items in various price ranges for the selected month.
+- **Endpoint**: /api/transactions
+- **Methods**: POST
+- **Parameters**:
+- **Authorization JWT-Token Required**
 
-#### Pie Chart Data
 
-- **Endpoint**: `/api/pie-chart`
-- **Method**: GET
-- **Query Parameters**:
-  - `month` (required): Month for filtering transactions (values: January to December).
-- **Description**: Returns data for a pie chart showing unique categories and the number of items in each category for the selected month.
+### Login Admin API
 
-#### Combined Data
+- **Endpoint**: /api/transactions/chart
+- **Methods**: POST
+- **Parameters**:
+- **month**: The selected month (1-12).
 
-- **Endpoint**: `/api/combined-data`
-- **Method**: GET
-- **Query Parameters**:
-  - `month` (required): Month for filtering transactions (values: January to December).
-- **Description**: Fetches data from all three APIs (`/api/statistics`, `/api/bar-chart`, `/api/pie-chart`) and returns it in a single response.
+### Register Admin API
 
-### Running the Server
+- **Endpoint**: /api/admin/register
+- **Methods**: POST
+- **Parameters**:Body -
+  {"contactNumber": "000000000",
+  "email": "gmail.@gmail.com",
+  "name": "examplename",
+  "password":"dummypassword",
+  "username":"eampleuser"}
 
-Start the server using the following command:
-    ```bash
-    npm start
+### User Fectch books API
 
+- **Endpoint**: /api/books/
+- **Methods**: GET
+- **Parameters**: Authorization JWT-Token Required
+
+## User Return book API
+
+- **Endpoint**: /api/admin/returnBook
+- **Methods**: POST
+- **Parameters**: Body-
+{ 
+"userId": "668920d457c4562e97f8fdff",
+"bookId": "6689853e73a449bbbb526145"
+ }
+- **Authorization JWT-Token Required**
+
+### Admin Fectch books API
+
+- **Endpoint**: /api/transactions/chart
+- **Methods**: POST
+- **Parameters**:
+- **Authorization JWT-Token Required**
+
+
+### Admin Transactions books API
+
+- **Endpoint**: /api/admin/transactions
+- **Methods**: GEPOSTT
+- **Parameters**:
+- **Authorization JWT-Token Required**
+
+### Admin Add book API
+
+- **Endpoint**: /api/admin/addBook
+- **Methods**: POST
+- **Parameters**: Body - [
+  {
+  "author": "Hans Christian Andersen",
+  "country": "Denmark",
+  "imageLink": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Hans_Christian_Andersen_%281834_painting%29.jpg",
+  "language": "Danish",
+  "link": "https://en.wikipedia.org/wiki/Fairy_Tales_Told_for_Children._First_Collection.\n",
+  "pages": 784,
+  "title": "Fairy tales",
+  "year": 1836,
+  "availability": true
+  }]
+- **Authorization JWT-Token Required**
+
+## Admin Issue book API
+
+- **Endpoint**: /api/admin/issueBook
+- **Methods**: POST
+- **Parameters**: Body-
+{"user": "668920d457c4562e97f8fdff",
+"book": "6689853e73a449bbbb526145",
+"dueDate":"12/6/2024",
+"transactionType": "borrowed"
+}
+- **Authorization JWT-Token Required**
+
+## Admin Remove books API
+
+- **Endpoint**:/api/admin/removeBook/bookID
+- **Methods**: DELETE
+- **Parameters**: Body-
+- **Authorization JWT-Token Required**
 
 
 # Frontend
 
-This project is a frontend application designed to display transactions data using provided APIs. The dashboard features a transactions table, statistical summaries, and a bar chart, all of which update dynamically based on user input and selected month.
-
-## Table of Contents
-- [Project Setup](#project-setup)
-- [Features](#features)
-- [APIs Used](#apis-used)
-- [Components](#components)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-
 ## Project Setup
 
-### Prerequisites
-- Node.js (v14 or higher)
+## Prerequisites
+- **Node.js (v14 or higher)**
 
 ### Installation
 
 1. Clone the repository:
+
 ```bash
-git clone https://github.com/yourusername/transactions-dashboard.git
+git clone https://github.com/surya123866/ONLINE-BOOKS-MANAGEMENT.git
 ```
 
 2. Navigate to the project directory:
+
 ```bash
-cd transactions-dashboard
+cd frontend
 ```
 
 3. Install dependencies:
+
 ```bash
 npm install
 ```
 
 4. Run the project:
+
 ```bash
 npm start
 ```
 
 The application should now be running on http://localhost:3000.
 
-# Features
+## Features
+- **Authentication: User and Admin login functionality.**
+- **Catalog Browsing: Users can view available books.**
+- **Admin Operations: Admins can add, remove, issue, and return books.**
+- **Transaction History: Users can view their borrowing history.**
 
-## Transactions Table
+### APIs Used
+- **User login, registration, fetch books, and transaction history.**
+- **Admin login, registration, fetch books, add books, issue books, return books, remove books, and view transactions.**
 
-- Displays a list of transactions for the selected month.
-- Month selection dropdown with options from January to December.
-- Default selection is March.
-- Search functionality to filter transactions by title, description, or price.
-- Pagination support with "Next" and "Previous" buttons to navigate through transaction pages.
-- Transactions Statistics
-- Displays total amount of sales, total sold items, and total unsold items for the selected month.
-- Data updates dynamically based on the selected month.
+## Components
 
-# Transactions Bar Chart
-Displays a bar chart showing the price range and number of items within each range for the selected month.
-Data updates dynamically based on the selected month.
+### Authentication Components
 
-## APIs Used
+- **Login: User and Admin login forms.**
+- **Register: User and Admin registration forms.**
+- **Catalog Components**
 
-### Transactions Listing API
-- **Endpoint**: /api/transactions
-- **Methods**: GET
-- **Parameters**:
-- **month**: The selected month (1-12).
-- **search**: (Optional) Text to search in title, description, or price.
-- **page**: The page number for pagination.
+- **BookList: Displays list of books available in the library.**
+- **BookDetail: Detailed view of a selected book.**
 
-### Transactions Statistics API
-- **Endpoint**: /api/transactions/stats
-- **Methods**: GET
-- **Parameters**:
-- **month**: The selected month (1-12).
+### Admin Components
 
-### Transactions Bar Chart API
-- **Endpoint**: /api/transactions/chart
-- **Methods**: GET
-- **Parameters**:
-- **month**: The selected month (1-12).
+- **AddBook: Form for adding new books.**
+- **IssueBook: Form for issuing books to users.**
+- **ReturnBook: Form for returning books.**
+- **RemoveBook: Option to remove a book from the catalog.**
+- **TransactionList: Displays list of all transactions.**
 
+### User Components
 
-### Month Selector
-- A dropdown component to select the month. The selected month affects the data displayed in the table, statistics, and chart.
-
-### Transactions Table
-- A table component that lists transactions with pagination and search functionality.
-
-### Statistics Box
-- Displays total sales amount, total sold items, and total unsold items for the selected month.
-
-### Bar Chart
-- Displays a bar chart representing the price range and number of items within that range for the selected month.
+- **UserTransaction: Displays the logged-in user's transaction history**
 
 ### Usage
--  Select a month from the dropdown to filter data by month.
-- Use the search box to filter transactions by title, description, or price.
--  Navigate through transaction pages using the "Next" and "Previous" buttons.
--  View the updated statistics and bar chart based on the selected month.
 
-**Contributing**
-- Contributions are welcome! Please fork the repository and create a pull request with your changes.
+- **Login: Users and Admins can log in using their credentials.**
+- **Register: New users and admins can register.**
+- **Browse Catalog: Users can view the list of available books.**
+- **Admin Operations: Admins can manage books and transactions.**
 
-
+### Contributing
+- **Feel free to fork the repository and submit pull requests. Please ensure your changes are well-documented and tested.**
 
